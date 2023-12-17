@@ -54,8 +54,10 @@ if __name__ == '__main__':
                 heading_num = length - len(headings)
                 unordered = line.lstrip('-')
                 unordered_num = length - len(unordered)
-                ordered = line.lstrip('*')
+                ordered = line.lstrip('*') # lstrip() removes leading white space
                 ordered_num = length - len(ordered)
+                # .._num - store the count of chars removed from the line
+
                 # headings and lists
                 if 1 <= heading_num <= 6:
                     line = '<h{}>'.format(
@@ -80,6 +82,8 @@ if __name__ == '__main__':
                     html.write('</ol>\n')
                     ordered_start = False
 
+                # if line does not match headings, lists or paragrahs,
+                # it gets written as is into html file
                 if not (heading_num or unordered_start or ordered_start):
                     if not paragraph and length > 1:
                         html.write('<p>\n')
@@ -92,7 +96,7 @@ if __name__ == '__main__':
 
                 if length > 1:
                     html.write(line)
-
+            # ensure tags are closed at the end of processing
             if unordered_start:
                 html.write('</ul>\n')
             if ordered_start:
