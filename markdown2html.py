@@ -38,13 +38,13 @@ if __name__ == '__main__':
                     hashed_content = hashlib.md5(content_in_brackets[0].encode()).hexdigest()
                     line = line.replace('[[' + content_in_brackets[0] + ']]', hashed_content)
 
-                # # removing the letter C
-                # remove_letter_c = re.findall(r'\(\(.+?\)\)', line)
-                # remove_c_more = re.findall(r'\(\((.+?)\)\)', line)
-                # if remove_letter_c:
-                #     remove_c_more = ''.join(
-                #         c for c in remove_c_more[0] if c not in 'Cc')
-                #     line = line.replace(remove_letter_c[0], remove_c_more)
+                # removing the letter C
+                remove_letter_c = re.findall(r'\(\(.+?\)\)', line)
+                remove_c_more = re.findall(r'\(\((.+?)\)\)', line)
+                if remove_letter_c:
+                    remove_c_more = ''.join(
+                        c for c in remove_c_more[0] if c not in 'Cc')
+                    line = line.replace(remove_letter_c[0], remove_c_more)
 
                 length = len(line)
                 headings = line.lstrip('#')
