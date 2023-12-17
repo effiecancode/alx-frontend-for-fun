@@ -7,15 +7,20 @@ import re
 import hashlib
 
 if __name__ == '__main__':
+    # Args handling
+    # check for the correct number of arguments
     if len(sys.argv) < 3:
         print('Usage: ./markdown2html.py README.md README.html',
               file=sys.stderr)
         exit(1)
 
+    # check if the file exists if not display a stderr and exit
     if not os.path.isfile(sys.argv[1]):
         print('Missing {}'.format(sys.argv[1]), file=sys.stderr)
         exit(1)
 
+    # file processing
+    # read the contents of the markdownfile sys.argv[1], line by line
     with open(sys.argv[1]) as read:
         with open(sys.argv[2], 'w') as html:
             unordered_start, ordered_start, paragraph = False, False, False
@@ -26,12 +31,12 @@ if __name__ == '__main__':
                 line = line.replace('__', '<em>', 1)
                 line = line.replace('__', '</em>', 1)
 
-                # md5
-                md5 = re.findall(r'\[\[.+?\]\]', line)
-                md5_inside = re.findall(r'\[\[(.+?)\]\]', line)
-                if md5:
-                    line = line.replace(md5[0], hashlib.md5(
-                        md5_inside[0].encode()).hexdigest())
+                # Find content inside double square brackets
+                content_in_brackets = re.findall(r'\[\[(.+?)\]\]', line)
+                if content_in_brackets:
+                # Calculate the MD5 hash of the content inside brackets
+                    hashed_content = hashlib.md5(content_in_brackets[0].encode()).hexdigest()
+                    line = line.replace('[[' + content_in_brackets[0] + ']]', hashed_content)
 
                 # removing the letter C
                 remove_letter_c = re.findall(r'\(\(.+?\)\)', line)
@@ -91,4 +96,4 @@ if __name__ == '__main__':
                 html.write('</ol>\n')
             if paragraph:
                 html.write('</p>\n')
-    exit (0)
+    exit(0)
